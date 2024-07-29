@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Auto refresh your website to the latest version",
   "author": "CMJ",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DnightChen/vite-plugin-auto-refresh.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
