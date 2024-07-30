@@ -1,34 +1,28 @@
-import type { PluginOption } from 'vite';
-import fs from 'node:fs';
-
-interface Config {
-  fileName?: string;
-  outDir?: string;
-  isDev?: boolean;
-}
-
-const defaultConfig = {
-  fileName: 'manifest',
-  outDir: 'public',
-  isDev: false,
+// src/index.ts
+import fs from "node:fs";
+var defaultConfig = {
+  fileName: "manifest",
+  outDir: "public",
+  isDev: false
 };
-
-export default function (config: Config = {}): PluginOption {
+function src_default(config = {}) {
   const options = { ...defaultConfig, ...config };
   const { fileName, isDev, outDir } = options;
-  const start = process.env.NODE_ENV !== 'development' || isDev;
+  const start = process.env.NODE_ENV !== "development" || isDev;
   return {
-    name: 'auto-refresh',
-    writeBundle(options) {
-      const buildPath = options.dir || '';
+    name: "auto-refresh",
+    writeBundle(options2) {
+      const buildPath = options2.dir || "";
       const outPath = `${buildPath}/${outDir}/${fileName}.json`;
-      if (!fs.existsSync(buildPath)) fs.mkdirSync(buildPath);
-      fs.writeFileSync(outPath, new Date().getTime().toString());
+      if (!fs.existsSync(buildPath))
+        fs.mkdirSync(buildPath);
+      fs.writeFileSync(outPath, (/* @__PURE__ */ new Date()).getTime().toString());
       console.log(`AutoRefresh completed and saved as ${fileName}.json`);
     },
-    transformIndexHtml(html: string) {
-      if (!start) return;
-      const insertIndex = html.lastIndexOf('</html>') - 9;
+    transformIndexHtml(html) {
+      if (!start)
+        return;
+      const insertIndex = html.lastIndexOf("</html>") - 9;
       const insertContent = `
       <style>
         #autorefresh {
@@ -101,15 +95,15 @@ export default function (config: Config = {}): PluginOption {
       <dialog id='autorefresh'>
         <div class='autorefresh-dialog'>
           <div class='dialog-header'>
-            更新提示
+            \u66F4\u65B0\u63D0\u793A
             <svg fill="none" viewBox="0 0 24 24" width="1em" height="1em" class="dialog-icon" onclick='autorefresh.close();'>
               <path fill="currentColor" d="M7.05 5.64L12 10.59l4.95-4.95 1.41 1.41L13.41 12l4.95 4.95-1.41 1.41L12 13.41l-4.95 4.95-1.41-1.41L10.59 12 5.64 7.05l1.41-1.41z"></path>
             </svg>
           </div>
-          <div class='dialog-body'>检测到系统有更新，是否刷新页面？</div>
+          <div class='dialog-body'>\u68C0\u6D4B\u5230\u7CFB\u7EDF\u6709\u66F4\u65B0\uFF0C\u662F\u5426\u5237\u65B0\u9875\u9762\uFF1F</div>
           <div class='dialog-footer'>
-            <div class='dialog-btn dialog-default'>不再提醒</div>
-            <div class='dialog-btn dialog-confirm' onclick='location.reload();'>刷新</div>
+            <div class='dialog-btn dialog-default'>\u4E0D\u518D\u63D0\u9192</div>
+            <div class='dialog-btn dialog-confirm' onclick='location.reload();'>\u5237\u65B0</div>
           </div>
         </div>
       </dialog>
@@ -126,7 +120,7 @@ export default function (config: Config = {}): PluginOption {
             let timestamp = "";
             let hasChange = false;
             setInterval(() => {
-              // 检测前端资源是否有更新
+              // \u68C0\u6D4B\u524D\u7AEF\u8D44\u6E90\u662F\u5426\u6709\u66F4\u65B0
               fetch(message.data + "?v=" + new Date().getTime(), {
                 method: "get",
               })
@@ -158,9 +152,10 @@ export default function (config: Config = {}): PluginOption {
         };
       </script>
       `;
-      return (
-        html.slice(0, insertIndex) + insertContent + html.slice(insertIndex)
-      );
-    },
+      return html.slice(0, insertIndex) + insertContent + html.slice(insertIndex);
+    }
   };
 }
+export {
+  src_default as default
+};

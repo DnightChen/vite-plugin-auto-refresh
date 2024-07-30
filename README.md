@@ -28,14 +28,11 @@ export default defineConfig({
 interface Config {
   fileName?: string;
   outDir?: string;
-  dts?: string;
   isDev?: boolean;
-  change?: () => void;
 }
 const defaultConfig = {
   fileName: 'manifest',
   outDir: 'public',
-  dts: 'src/utils/pinia-auto-refresh.ts',
   isDev: false,
 };
 ```
