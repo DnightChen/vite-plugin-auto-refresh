@@ -37,12 +37,17 @@ var import_node_fs = __toESM(require("fs"));
 var defaultConfig = {
   fileName: "manifest",
   outDir: "public",
-  isDev: false
+  isDev: false,
+  language: "CN"
 };
 function src_default(config = {}) {
   const options = { ...defaultConfig, ...config };
-  const { fileName, isDev, outDir } = options;
+  const { fileName, isDev, outDir, language } = options;
   const start = process.env.NODE_ENV !== "development" || isDev;
+  const title = language === "CN" ? "\u66F4\u65B0\u786E\u8BA4" : "Update Confirm";
+  const body = language === "CN" ? "\u68C0\u6D4B\u5230\u7CFB\u7EDF\u6709\u66F4\u65B0\uFF0C\u662F\u5426\u5237\u65B0\u9875\u9762\uFF1F" : "Detected system update, do you want to refresh the page?";
+  const confirmBtn = language === "CN" ? "\u5237\u65B0" : "refresh";
+  const defaultBtn = language === "CN" ? "\u4E0D\u518D\u63D0\u9192" : "never notify";
   return {
     name: "auto-refresh",
     writeBundle(options2) {
@@ -129,15 +134,15 @@ function src_default(config = {}) {
       <dialog id='autorefresh'>
         <div class='autorefresh-dialog'>
           <div class='dialog-header'>
-            \u66F4\u65B0\u63D0\u793A
+            ${title}
             <svg fill="none" viewBox="0 0 24 24" width="1em" height="1em" class="dialog-icon" onclick='autorefresh.close();'>
               <path fill="currentColor" d="M7.05 5.64L12 10.59l4.95-4.95 1.41 1.41L13.41 12l4.95 4.95-1.41 1.41L12 13.41l-4.95 4.95-1.41-1.41L10.59 12 5.64 7.05l1.41-1.41z"></path>
             </svg>
           </div>
-          <div class='dialog-body'>\u68C0\u6D4B\u5230\u7CFB\u7EDF\u6709\u66F4\u65B0\uFF0C\u662F\u5426\u5237\u65B0\u9875\u9762\uFF1F</div>
+          <div class='dialog-body'>${body}</div>
           <div class='dialog-footer'>
-            <div class='dialog-btn dialog-default'>\u4E0D\u518D\u63D0\u9192</div>
-            <div class='dialog-btn dialog-confirm' onclick='location.reload();'>\u5237\u65B0</div>
+            <div class='dialog-btn dialog-default'>${defaultBtn}</div>
+            <div class='dialog-btn dialog-confirm' onclick='location.reload();'>${confirmBtn}</div>
           </div>
         </div>
       </dialog>

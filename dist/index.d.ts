@@ -4,6 +4,7 @@ interface Config {
     fileName?: string;
     outDir?: string;
     isDev?: boolean;
+    language?: 'EN' | 'CN';
 }
 declare function export_default(config?: Config): PluginOption;
 

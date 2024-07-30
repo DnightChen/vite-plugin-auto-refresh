@@ -5,18 +5,27 @@ interface Config {
   fileName?: string;
   outDir?: string;
   isDev?: boolean;
+  language?: 'EN' | 'CN';
 }
 
-const defaultConfig = {
+const defaultConfig: Config = {
   fileName: 'manifest',
   outDir: 'public',
   isDev: false,
+  language: 'CN',
 };
 
 export default function (config: Config = {}): PluginOption {
   const options = { ...defaultConfig, ...config };
-  const { fileName, isDev, outDir } = options;
+  const { fileName, isDev, outDir, language } = options;
   const start = process.env.NODE_ENV !== 'development' || isDev;
+  const title = language === 'CN' ? '更新确认' : 'Update Confirm';
+  const body =
+    language === 'CN'
+      ? '检测到系统有更新，是否刷新页面？'
+      : 'Detected system update, do you want to refresh the page?';
+  const confirmBtn = language === 'CN' ? '刷新' : 'refresh';
+  const defaultBtn = language === 'CN' ? '不再提醒' : 'never notify';
   return {
     name: 'auto-refresh',
     writeBundle(options) {
@@ -101,15 +110,15 @@ export default function (config: Config = {}): PluginOption {
       <dialog id='autorefresh'>
         <div class='autorefresh-dialog'>
           <div class='dialog-header'>
-            更新提示
+            ${title}
             <svg fill="none" viewBox="0 0 24 24" width="1em" height="1em" class="dialog-icon" onclick='autorefresh.close();'>
               <path fill="currentColor" d="M7.05 5.64L12 10.59l4.95-4.95 1.41 1.41L13.41 12l4.95 4.95-1.41 1.41L12 13.41l-4.95 4.95-1.41-1.41L10.59 12 5.64 7.05l1.41-1.41z"></path>
             </svg>
           </div>
-          <div class='dialog-body'>检测到系统有更新，是否刷新页面？</div>
+          <div class='dialog-body'>${body}</div>
           <div class='dialog-footer'>
-            <div class='dialog-btn dialog-default'>不再提醒</div>
-            <div class='dialog-btn dialog-confirm' onclick='location.reload();'>刷新</div>
+            <div class='dialog-btn dialog-default'>${defaultBtn}</div>
+            <div class='dialog-btn dialog-confirm' onclick='location.reload();'>${confirmBtn}</div>
           </div>
         </div>
       </dialog>

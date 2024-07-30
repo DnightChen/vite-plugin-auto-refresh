@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-auto-refresh",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Auto refresh your website to the latest version",
   "author": "CMJ",
   "repository": {
@@ -17,7 +17,7 @@
     "example:vue2": "cd examples/vite-vue2 && pnpm run build",
     "example:vue3": "cd examples/vite-vue3 && pnpm run dev",
     "prepublishOnly": "pnpm run build",
-    "release": "npx bumpp --push --tag --commit && pnpm publish"
+    "push": "git add . && git commit -m 'vite plugin' && git push origin"
   },
   "keywords": [
     "vite",
