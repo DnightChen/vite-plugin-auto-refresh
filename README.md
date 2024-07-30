@@ -13,12 +13,9 @@ import { defineConfig } from 'vite';
 import AutoRefresh from 'vite-plugin-auto-refresh';
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
-  },
+  ...
   plugins: [AutoRefresh()],
+  ...
 });
 ```
 
@@ -29,10 +26,13 @@ interface Config {
   fileName?: string;
   outDir?: string;
   isDev?: boolean;
+  language?: 'EN' | 'CN';
 }
+
 const defaultConfig = {
   fileName: 'manifest',
   outDir: 'public',
   isDev: false,
+  language: 'CN',
 };
 ```
